@@ -8,64 +8,6 @@ from tensorflow.contrib import rnn
 
 class Decoder:
 
-  """ this class describes two neural networks which consists of several
-  long-short term memory (LSTM) layers followed by a feed forward network.
-  It is designed for quantum error correction on surface codes but should
-  also work on similar codes.
-
-  the __init__ function takes the following parameters:
-
-  dim_syndr: the dimension of the input vector (this vector describes the
-             syndrome increments (events))
-
-  dim_fsyndr: the dimension of the final syndrome incements (error signal),
-             which are concatenated with the output vector of the last LSTM
-             layer (they contain the relevant information from the final
-             data-qubit readout)
-
-  lstm1_iss: a list containing the sizes of the internal states of the
-             LSTM 1 layers
-
-  lstm2_iss: a list containing the sizes of the internal states of the
-             LSTM 2 layers
-
-  ff1_layer_sizes: a list containing the number of neurons per layer of
-                   the first feedforward network
-
-  ff2_layer_sizes: a list containing the number of neurons per layer of
-                   the second feedforward network
-
-  n_steps_net1: number of syndrome increment steps that constitute the input
-                to the first network
-
-  n_steps_net2: the last n_steps_net2 steps of each sequence are fed into the
-                second network
-
-  checkpoint_path: a path to which the network gets saved both for
-                   intermediate and final versions
-
-  l2w_coeff: coefficient that relates the l2 norm of the weights of the
-           feedforward networks to a cost (regularization)
-
-  l2b_coeff: coefficient that relates the l2 norm of the biases of the
-           feedforward networks to a cost (regularization)
-
-  lstm_keep_prob: dropout regularization of the LSTM layers, the parameter
-                  controlls the percentage of how many entries of the
-                  output vectors of the LSTM layers are NOT set to zero
-                  during training
-
-  training_phase: this parameter controlls the training phase. in phase 0
-  both networks are trained simultaneously. in phase 1 only the first
-  network is trained, in phase 2 only the second network is trained.
-
-  learning_rate: the initial learning rate of the Adam optimizer
-
-  seed: currently seeding is not supported
-  """
-
-  # # # initialization functions # # #
-
   def __init__(self, dim_syndr, dim_fsyndr,
                lstm1_iss, lstm2_iss, ff1_layer_sizes, ff2_layer_sizes,
                n_steps_net1, n_steps_net2, checkpoint_path,
@@ -92,8 +34,6 @@ class Decoder:
     self._init_graph()
 
   def _init_data_params(self, dim_syndr, dim_fsyndr):
-    """ a subfunction of __init__, setting variables related to the input
-        data, the input variables are described in class description """
     self.dim_syndr = dim_syndr
     self.dim_fsyndr = dim_fsyndr
     self.n_data_qubits = dim_syndr + 1
@@ -101,9 +41,6 @@ class Decoder:
 
   def _init_network_params(self, lstm1_iss, lstm2_iss, ff1_layer_sizes,
                            ff2_layer_sizes, n_steps_net1, n_steps_net2):
-    """ a subfunction of __init__, setting the variables that define the
-        network size, the input variables are described in class
-        description """
 
     # LSTM network parameters
     self.lstm1_iss = lstm1_iss
@@ -134,8 +71,6 @@ class Decoder:
     self.total_trained_batches = 0
 
   def _init_graph(self):
-    """ a subfunction of __init__, defining the graph, initializing the
-        tensorflow variables, and the optimizer """
 
     self.graph = tf.Graph()
     with self.graph.as_default():
@@ -143,12 +78,7 @@ class Decoder:
       self._init_network_functions()
 
   def _init_network_variables(self):
-    """ a subfunction of _init_graph, defining the tensorflow placeholders,
-        weights and biases of the feed forward networks and corresponding
-        saver instances """
 
-    # placeholders #
-    # ... for the input of the syndrome increments
     self.x1 = tf.placeholder(
         "float", [None, self.n_steps_net1, self.dim_syndr])
     self.x2 = tf.placeholder(
@@ -273,8 +203,6 @@ class Decoder:
     self.initialize_NN = tf.global_variables_initializer()
 
   def start_session(self, model_file=None, gpu_options=None):
-    """ this function (re-)initializes the tensorflow session,
-        if a model_file is specified it loads the model's parameters """
     if gpu_options is None:
       self.sess = tf.Session(graph=self.graph)
     else:
@@ -293,7 +221,6 @@ class Decoder:
     self.learning_rate = learning_rate
 
   def change_network_length(self, n_steps_net1, n_steps_net2):
-    """ function to adjust the maximum number of steps per network """
     # save the all trainable variables
     self.save_variables(self.cp_path + 'temp_change_network_')
 
@@ -1297,20 +1224,7 @@ if __name__ == '__main__':
   train_fname =
   validation_fname =
   test_fname =
-
-  # # # # # # # # # # # # Structure of the databases  # # # # # # # # # #
-  # To learn more about the structure of the databases, please consult  #
-  # https://github.com/baireuther/circuit_model                         #
-  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-  # Define path and names to store checkpoints of the network and         #
-  # feedback from training                                                #
-  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-  """ WARNING: Make sure that the checkpoint_path directory is empty because
-  existing files might be overwritten.
-  """
+  
   # path for feedback and checkpoints (must exist and be empty)
   checkpoint_path =
   feedback_fname = "feedback"
