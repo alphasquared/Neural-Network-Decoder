@@ -1,6 +1,6 @@
-##Neural Network Quantum Error Correction Decoder
+## Neural Network Quantum Error Correction Decoder
 
-# Readme for decoder.py
+# ReadMe for decoder.py
 The source code in decoder.py describes a decoder for stabilizer codes, in particular for the surface code. The decoder is implemented using the TensorFlow library.
 
 ## How to use the code to train and evaluate a decoder:
