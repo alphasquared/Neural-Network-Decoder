@@ -1,24 +1,3 @@
-# Copyright 2017 Paul Baireuther. All Rights Reserved.
-#
-# ====================================================
-
-"""
-A decoder for stabilizer codes, in particular for the surface code, based on
-a combination of recurrent and feedforward neural networks. The neural networks
-are implemented using the TensorFlow library [1].
-
-References
-----------
-[1] M. Abadi, A. Agarwal, P. Barham, E. Brevdo, Z. Chen, C. Citro,
-    G. S.Corrado, A. Davis, J. Dean, M. Devin, S. Ghemawat, I. Goodfellow,
-    A. Harp, G. Irving, M. Isard, Y. Jia, R. Jozefowicz, L. Kaiser, M. Kudlur,
-    J. Levenberg, D. Mane, R. Monga, S. Moore, D. Murray, C. Olah, M. Schuster,
-    J. Shlens, B. Steiner, I. Sutskever, K. Talwar, P. Tucker, V. Vanhoucke,
-    V. Vasudevan, F. Vi ́egas, O. Vinyals, P. Warden, M. Wattenberg, M. Wicke,
-    Y. Yu, and X. Zheng, "TensorFlow: Large-Scale Machine Learning on
-    Heterogeneous Systems", arXiv:1603.04467 (2016).
-"""
-
 import copy
 import sqlite3
 import numpy as np
