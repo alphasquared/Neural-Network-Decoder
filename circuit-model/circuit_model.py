@@ -1,7 +1,3 @@
-# Copyright 2017 Paul Baireuther. All Rights Reserved.
-#
-# ====================================================
-
 """
 This code implements a simplified Pauli error channel model for odd distance,
 square shaped surface code with rough edges [1]. The error model follows the
